@@ -24,11 +24,19 @@ Projeto **dividido** em front-end e back-end, com comunicação via API REST.
 
 ## Ordem de implementação sugerida
 
-1. Preparação do repositório _(atual)_
-2. Configurar Django + DRF + banco
+1. Preparação do repositório ✅
+2. Configurar Django + DRF + banco ✅ (`feat/setup-django`)
 3. Autenticação e perfil
 4. Posts + feed
 5. Seguir usuários
 6. Curtidas e comentários
 7. Front-end React
 8. Deploy + README final
+
+## Rotas da API (esqueleto)
+
+| Prefixo | App | Status |
+|---------|-----|--------|
+| `/api/auth/` | `accounts` | Em breve (passo 3) |
+| `/api/social/` | `social` | Em breve (passo 5) |
+| `/api/posts/` | `posts` | Em breve (passos 4 e 6) |

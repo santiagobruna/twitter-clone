@@ -15,9 +15,16 @@ Aplicação de microblog inspirada no Twitter, com autenticação, perfis, feed 
 
 ```
 projeto-final-ebac/
-├── backend/          # API Django + DRF
-├── frontend/         # Interface React
-├── docs/             # Documentação do projeto
+├── backend/                 # API Django + DRF
+│   ├── accounts/            # Auth e perfil
+│   ├── social/              # Seguir / seguidores
+│   ├── posts/               # Posts, curtidas, comentários
+│   ├── config/              # Settings e URLs do projeto
+│   ├── manage.py
+│   ├── requirements.txt
+│   └── .env.example
+├── frontend/                # Interface React (próximos passos)
+├── docs/
 ├── .gitignore
 └── README.md
 ```
@@ -34,20 +41,24 @@ projeto-final-ebac/
 
 ## Como rodar (local)
 
-> Instruções completas serão preenchidas após a configuração do Django e do front-end.
-
 ### Back-end
 
 ```bash
 cd backend
-# python -m venv .venv
-# .venv\Scripts\activate   # Windows
-# pip install -r requirements.txt
-# python manage.py migrate
-# python manage.py runserver
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+copy .env.example .env
+python manage.py migrate
+python manage.py runserver
 ```
 
+API em: http://127.0.0.1:8000/  
+Admin em: http://127.0.0.1:8000/admin/
+
 ### Front-end
+
+> Será configurado em um passo futuro.
 
 ```bash
 cd frontend

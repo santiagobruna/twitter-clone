@@ -31,7 +31,8 @@ projeto-final-ebac/
 
 ## Funcionalidades
 
-- [ ] Cadastro e login com autenticação segura
+- [x] Cadastro de usuário (`POST /api/auth/register/`)
+- [ ] Login com autenticação segura
 - [ ] Edição de perfil (foto, nome e senha — campos opcionais)
 - [ ] Seguir / deixar de seguir usuários
 - [ ] Lista de seguidores e seguidos
@@ -55,6 +56,35 @@ python manage.py runserver
 
 API em: http://127.0.0.1:8000/  
 Admin em: http://127.0.0.1:8000/admin/
+
+### Cadastro de usuário
+
+```http
+POST /api/auth/register/
+Content-Type: application/json
+
+{
+  "username": "bruna",
+  "email": "bruna@email.com",
+  "password": "suaSenhaForte123",
+  "password_confirm": "suaSenhaForte123"
+}
+```
+
+Resposta `201`:
+
+```json
+{
+  "user": {
+    "id": 1,
+    "username": "bruna",
+    "email": "bruna@email.com",
+    "date_joined": "...",
+    "profile": { "display_name": "bruna", "avatar": null, "bio": "" }
+  },
+  "token": "seu-token-de-acesso"
+}
+```
 
 ### Front-end
 

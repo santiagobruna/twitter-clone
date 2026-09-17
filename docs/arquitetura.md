@@ -26,17 +26,19 @@ Projeto **dividido** em front-end e back-end, com comunicação via API REST.
 
 1. Preparação do repositório ✅
 2. Configurar Django + DRF + banco ✅ (`feat/setup-django`)
-3. Autenticação e perfil
-4. Posts + feed
-5. Seguir usuários
-6. Curtidas e comentários
-7. Front-end React
-8. Deploy + README final
+3. Cadastro de usuários ✅ (`feat/user-registration`)
+4. Login e edição de perfil
+5. Posts + feed
+6. Seguir usuários
+7. Curtidas e comentários
+8. Front-end React
+9. Deploy + README final
 
-## Rotas da API (esqueleto)
+## Rotas da API
 
-| Prefixo | App | Status |
-|---------|-----|--------|
-| `/api/auth/` | `accounts` | Em breve (passo 3) |
-| `/api/social/` | `social` | Em breve (passo 5) |
-| `/api/posts/` | `posts` | Em breve (passos 4 e 6) |
+| Método | Endpoint | Descrição | Status |
+|--------|----------|-----------|--------|
+| `POST` | `/api/auth/register/` | Cadastro de usuário | ✅ |
+| — | `/api/auth/` (login/perfil) | Login e perfil | Próximo |
+| — | `/api/social/` | Seguir / seguidores | Em breve |
+| — | `/api/posts/` | Posts, curtidas, comentários | Em breve |

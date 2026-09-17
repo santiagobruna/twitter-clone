@@ -8,7 +8,7 @@ Aplicação de microblog inspirada no Twitter, com autenticação, perfis, feed 
 |--------|------------|
 | Back-end | Python + Django REST Framework |
 | Front-end | React (a definir na configuração) |
-| Banco de dados | SQLite (dev) / PostgreSQL (produção, opcional) |
+| Banco de dados | SQLite (dev) / PostgreSQL (produção) |
 | API | Arquitetura REST |
 
 ## Estrutura do repositório
@@ -98,8 +98,18 @@ cd frontend
 
 ## Deploy
 
-- **URL da aplicação:** _(será adicionada após o deploy)_
-- **Repositório:** _(será adicionado após publicar no GitHub)_
+Guia completo: [`docs/deploy.md`](docs/deploy.md)
+
+Resumo (Render):
+
+1. Criar PostgreSQL no Render e copiar a Internal Database URL
+2. Criar Web Service com Root Directory `backend`
+3. Build: `bash build.sh` · Start: `gunicorn config.wsgi:application`
+4. Definir `SECRET_KEY`, `DEBUG=False`, `ALLOWED_HOSTS`, `DATABASE_URL`, etc.
+5. Testar `POST /api/auth/register/` na URL do serviço
+
+- **URL da API:** _(preencher após o deploy)_
+- **Repositório:** _(preencher após publicar no GitHub)_
 
 ## Autores
 

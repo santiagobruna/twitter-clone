@@ -27,12 +27,15 @@ Projeto **dividido** em front-end e back-end, com comunicação via API REST.
 1. Preparação do repositório ✅
 2. Configurar Django + DRF + banco ✅ (`feat/setup-django`)
 3. Cadastro de usuários ✅ (`feat/user-registration`)
-4. Login e edição de perfil
-5. Posts + feed
-6. Seguir usuários
-7. Curtidas e comentários
-8. Front-end React
-9. Deploy + README final
+4. Preparar API para produção ✅ (`feat/production-ready`)
+5. Login e edição de perfil
+6. Posts + feed
+7. Seguir usuários
+8. Curtidas e comentários
+9. Front-end React
+10. Deploy final + README
+
+Guia de deploy: [`deploy.md`](deploy.md)
 
 ## Rotas da API
 

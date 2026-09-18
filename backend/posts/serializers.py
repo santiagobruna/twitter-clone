@@ -8,7 +8,7 @@ User = get_user_model()
 
 class AuthorSerializer(serializers.ModelSerializer):
     display_name = serializers.CharField(source='profile.display_name', read_only=True)
-    avatar = serializers.ImageField(source='profile.avatar', read_only=True)
+    avatar = serializers.URLField(source='profile.avatar', read_only=True, allow_null=True)
 
     class Meta:
         model = User

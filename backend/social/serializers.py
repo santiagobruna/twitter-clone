@@ -20,7 +20,7 @@ class FollowSerializer(serializers.ModelSerializer):
 
 class UserBriefSerializer(serializers.ModelSerializer):
     display_name = serializers.CharField(source='profile.display_name', read_only=True)
-    avatar = serializers.ImageField(source='profile.avatar', read_only=True)
+    avatar = serializers.URLField(source='profile.avatar', read_only=True, allow_null=True)
     is_following = serializers.SerializerMethodField()
 
     class Meta:

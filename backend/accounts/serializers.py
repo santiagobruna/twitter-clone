@@ -3,6 +3,8 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
+from social.models import Follow
+
 from .models import Profile
 
 User = get_user_model()
@@ -17,11 +19,27 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
+    followers_count = serializers.SerializerMethodField()
+    following_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'date_joined', 'profile')
+        fields = (
+            'id',
+            'username',
+            'email',
+            'date_joined',
+            'profile',
+            'followers_count',
+            'following_count',
+        )
         read_only_fields = fields
+
+    def get_followers_count(self, obj):
+        return Follow.objects.filter(following=obj).count()
+
+    def get_following_count(self, obj):
+        return Follow.objects.filter(follower=obj).count()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -102,7 +120,17 @@ class ProfileUpdateSerializer(serializers.Serializer):
         required=False,
         allow_blank=True,
     )
-    avatar = serializers.ImageField(required=False, allow_null=True)
+    bio = serializers.CharField(
+        max_length=160,
+        required=False,
+        allow_blank=True,
+    )
+    avatar = serializers.URLField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        max_length=500,
+    )
     password = serializers.CharField(
         write_only=True,
         required=False,
@@ -144,15 +172,18 @@ class ProfileUpdateSerializer(serializers.Serializer):
         if 'display_name' in validated_data:
             profile.display_name = validated_data['display_name']
 
+        if 'bio' in validated_data:
+            profile.bio = validated_data['bio']
+
         if 'avatar' in validated_data:
-            profile.avatar = validated_data['avatar']
+            avatar = validated_data['avatar']
+            profile.avatar = avatar or None
 
         profile.save()
 
         if password:
             instance.set_password(password)
             instance.save(update_fields=['password'])
-            # Invalida tokens antigos e emite um novo
             Token.objects.filter(user=instance).delete()
             Token.objects.create(user=instance)
 

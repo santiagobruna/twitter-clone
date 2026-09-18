@@ -34,11 +34,11 @@ projeto-final-ebac/
 - [x] Cadastro de usuário (`POST /api/auth/register/`)
 - [x] Login com autenticação segura (`POST /api/auth/login/`)
 - [x] Edição de perfil (foto, nome e senha — campos opcionais)
-- [ ] Seguir / deixar de seguir usuários
-- [ ] Lista de seguidores e seguidos
-- [ ] Feed apenas com posts de quem o usuário segue
-- [ ] Curtidas e comentários em postagens
-- [ ] Deploy online + este repositório no GitHub
+- [x] Seguir / deixar de seguir usuários
+- [x] Lista de seguidores e seguidos
+- [x] Feed apenas com posts de quem o usuário segue
+- [x] Curtidas e comentários em postagens
+- [ ] Deploy online + este repositório no GitHub / front-end
 
 ## Como rodar (local)
 
@@ -136,6 +136,34 @@ Content-Type: application/json
 {
   "display_name": "Bruna Santiago"
 }
+```
+
+### Seguir usuários
+
+```http
+POST   /api/social/follow/<user_id>/
+DELETE /api/social/follow/<user_id>/
+GET    /api/social/following/
+GET    /api/social/followers/
+GET    /api/social/users/<user_id>/following/
+GET    /api/social/users/<user_id>/followers/
+```
+
+Header: `Authorization: Token ...`
+
+### Postagens, feed, curtidas e comentários
+
+```http
+POST   /api/posts/                    # criar post { "content": "Olá!" }
+GET    /api/posts/                    # minhas postagens
+GET    /api/posts/feed/               # só posts de quem eu sigo
+GET    /api/posts/<id>/
+DELETE /api/posts/<id>/               # só o autor
+POST   /api/posts/<id>/like/
+DELETE /api/posts/<id>/like/
+GET    /api/posts/<id>/comments/
+POST   /api/posts/<id>/comments/      # { "content": "..." }
+DELETE /api/posts/comments/<id>/      # só o autor do comentário
 ```
 
 ### Front-end

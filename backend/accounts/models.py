@@ -11,7 +11,13 @@ class Profile(models.Model):
     display_name = models.CharField('nome de exibição', max_length=150, blank=True)
     avatar = models.URLField(
         'foto de perfil',
-        max_length=500,
+        max_length=1000,
+        blank=True,
+        null=True,
+    )
+    banner = models.URLField(
+        'capa do perfil',
+        max_length=1000,
         blank=True,
         null=True,
     )

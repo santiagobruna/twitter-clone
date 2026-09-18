@@ -61,7 +61,8 @@ export function ProfilePage() {
   const displayName =
     profile?.profile?.display_name || profile?.username || 'Usuário'
   const avatar = profile?.profile?.avatar
-  const bio = profile?.profile?.bio
+  const banner = profile?.profile?.banner
+  const bio = (profile?.profile?.bio || '').trim()
 
   return (
     <section className="profile-page">
@@ -77,7 +78,11 @@ export function ProfilePage() {
         </div>
       </header>
 
-      <div className="profile-banner" aria-hidden="true" />
+      <div
+        className={`profile-banner${banner ? ' profile-banner--image' : ''}`}
+        style={banner ? { backgroundImage: `url("${banner}")` } : undefined}
+        aria-hidden="true"
+      />
 
       <div className="profile-header">
         <Avatar src={avatar} name={displayName} size={96} className="profile-avatar" />

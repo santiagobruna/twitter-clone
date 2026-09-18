@@ -23,6 +23,14 @@ function uploadError(message) {
  * Retorna a URL pública do arquivo.
  */
 export async function uploadAvatar(file, userId) {
+  return uploadProfileImage(file, userId, 'avatar')
+}
+
+export async function uploadBanner(file, userId) {
+  return uploadProfileImage(file, userId, 'banner')
+}
+
+async function uploadProfileImage(file, userId, kind) {
   if (!supabase) {
     throw uploadError(
       'O envio de fotos ainda não está configurado. Peça para revisar as variáveis do Supabase.',
@@ -39,7 +47,7 @@ export async function uploadAvatar(file, userId) {
   }
 
   const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
-  const path = `${userId}/${Date.now()}.${extension}`
+  const path = `${userId}/${kind}-${Date.now()}.${extension}`
 
   const { error } = await supabase.storage.from(bucket).upload(path, file, {
     cacheControl: '3600',

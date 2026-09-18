@@ -6,6 +6,7 @@ const FIELD_LABELS = {
   display_name: 'Nome',
   bio: 'Bio',
   avatar: 'Foto de perfil',
+  banner: 'Capa do perfil',
   content: 'Conteúdo',
 }
 

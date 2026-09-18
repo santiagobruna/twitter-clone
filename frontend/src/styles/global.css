@@ -1,3 +1,24 @@
+:root {
+  --color-bg: #000000;
+  --color-bg-elevated: #16181c;
+  --color-bg-input: #0f1419;
+  --color-border: #2f3336;
+  --color-border-strong: #536471;
+  --color-text: #e7e9ea;
+  --color-text-muted: #71767b;
+  --color-primary: #1d9bf0;
+  --color-primary-hover: #1a8cd8;
+  --color-danger: #f4212e;
+  --color-on-primary: #ffffff;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --font-sans: 'Manrope', 'Segoe UI', sans-serif;
+  --shadow-card: 0 0 0 1px var(--color-border);
+  --auth-max: 1120px;
+}
+
 *,
 *::before,
 *::after {
@@ -12,13 +33,30 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
-  color: #0f172a;
-  background: #f8fafc;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
 }
 
-h1 {
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+h1,
+h2,
+p {
   margin-top: 0;
 }
 

@@ -28,7 +28,7 @@ Projeto **dividido** em front-end e back-end, com comunicação via API REST.
 2. Configurar Django + DRF + banco ✅ (`feat/setup-django`)
 3. Cadastro de usuários ✅ (`feat/user-registration`)
 4. Preparar API para produção ✅ (`feat/production-ready`)
-5. Login e edição de perfil
+5. Login e edição de perfil ✅ (`feat/profile-settings`)
 6. Posts + feed
 7. Seguir usuários
 8. Curtidas e comentários
@@ -42,6 +42,8 @@ Guia de deploy: [`deploy.md`](deploy.md)
 | Método | Endpoint | Descrição | Status |
 |--------|----------|-----------|--------|
 | `POST` | `/api/auth/register/` | Cadastro de usuário | ✅ |
-| — | `/api/auth/` (login/perfil) | Login e perfil | Próximo |
+| `POST` | `/api/auth/login/` | Login e token | ✅ |
+| `GET` | `/api/auth/profile/` | Ver perfil autenticado | ✅ |
+| `PATCH` | `/api/auth/profile/` | Alterar nome, foto e/ou senha | ✅ |
 | — | `/api/social/` | Seguir / seguidores | Em breve |
 | — | `/api/posts/` | Posts, curtidas, comentários | Em breve |

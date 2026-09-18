@@ -7,12 +7,12 @@ O front faz upload direto no bucket **público** do Supabase e salva a URL no pe
 ```env
 VITE_SUPABASE_URL=https://ycneuaqfmovroxieptkq.supabase.co
 VITE_SUPABASE_ANON_KEY=sua-anon-key
-VITE_SUPABASE_BUCKET=avatars
+VITE_SUPABASE_BUCKET=twitter-clone
 ```
 
 - `VITE_SUPABASE_URL`: Project Settings → API → Project URL  
 - `VITE_SUPABASE_ANON_KEY`: Project Settings → API → `anon` `public`  
-- `VITE_SUPABASE_BUCKET`: nome do bucket (ex.: `avatars`)
+- `VITE_SUPABASE_BUCKET`: nome do bucket (`twitter-clone`)
 
 ## Políticas do bucket (Storage → Policies)
 
@@ -20,22 +20,21 @@ Para bucket público de leitura e upload anônimo (ok para o curso):
 
 ```sql
 -- Leitura pública
-create policy "Public read avatars"
+create policy "Public read twitter-clone"
 on storage.objects for select
-using (bucket_id = 'avatars');
+using (bucket_id = 'twitter-clone');
 
--- Upload público (ou restrinja depois)
-create policy "Public upload avatars"
+-- Upload
+create policy "Public upload twitter-clone"
 on storage.objects for insert
-with check (bucket_id = 'avatars');
+with check (bucket_id = 'twitter-clone');
 
 -- Update (upsert)
-create policy "Public update avatars"
+create policy "Public update twitter-clone"
 on storage.objects for update
-using (bucket_id = 'avatars');
+using (bucket_id = 'twitter-clone')
+with check (bucket_id = 'twitter-clone');
 ```
-
-Ajuste `avatars` se o bucket tiver outro nome.
 
 ## Fluxo
 

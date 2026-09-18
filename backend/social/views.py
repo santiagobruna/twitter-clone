@@ -4,6 +4,8 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from config.api_responses import bad_request, conflict, not_found
+
 from .models import Follow
 from .serializers import FollowSerializer, UserBriefSerializer
 
@@ -21,9 +23,9 @@ class FollowToggleView(APIView):
     def post(self, request, user_id):
         target = get_object_or_404(User, pk=user_id)
         if target == request.user:
-            return Response(
-                {'detail': 'Você não pode seguir a si mesmo.'},
-                status=status.HTTP_400_BAD_REQUEST,
+            return bad_request(
+                'Você não pode seguir a si mesmo.',
+                code='SELF_FOLLOW',
             )
 
         follow, created = Follow.objects.get_or_create(
@@ -31,9 +33,9 @@ class FollowToggleView(APIView):
             following=target,
         )
         if not created:
-            return Response(
-                {'detail': 'Você já segue este usuário.'},
-                status=status.HTTP_400_BAD_REQUEST,
+            return conflict(
+                'Você já segue este usuário.',
+                code='ALREADY_FOLLOWING',
             )
 
         return Response(
@@ -48,9 +50,9 @@ class FollowToggleView(APIView):
             following=target,
         ).delete()
         if not deleted:
-            return Response(
-                {'detail': 'Você não segue este usuário.'},
-                status=status.HTTP_400_BAD_REQUEST,
+            return not_found(
+                'Você não segue este usuário.',
+                code='NOT_FOLLOWING',
             )
         return Response(status=status.HTTP_204_NO_CONTENT)
 

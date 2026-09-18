@@ -3,6 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from config.api_responses import conflict, not_found
 from social.models import Follow
 
 from .models import Comment, Like, Post
@@ -15,6 +16,8 @@ from .serializers import (
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
+    message = 'Você só pode alterar o próprio conteúdo.'
+
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -93,13 +96,13 @@ class LikeToggleView(APIView):
         post = get_object_or_404(Post, pk=pk)
         like, created = Like.objects.get_or_create(user=request.user, post=post)
         if not created:
-            return Response(
-                {'detail': 'Você já curtiu esta postagem.'},
-                status=status.HTTP_400_BAD_REQUEST,
+            return conflict(
+                'Você já curtiu esta postagem.',
+                code='ALREADY_LIKED',
             )
         return Response(
             {
-                'detail': 'Curtida adicionada.',
+                'message': 'Curtida adicionada.',
                 'likes_count': post.likes.count(),
             },
             status=status.HTTP_201_CREATED,
@@ -109,13 +112,13 @@ class LikeToggleView(APIView):
         post = get_object_or_404(Post, pk=pk)
         deleted, _ = Like.objects.filter(user=request.user, post=post).delete()
         if not deleted:
-            return Response(
-                {'detail': 'Você ainda não curtiu esta postagem.'},
-                status=status.HTTP_400_BAD_REQUEST,
+            return not_found(
+                'Você ainda não curtiu esta postagem.',
+                code='NOT_LIKED',
             )
         return Response(
             {
-                'detail': 'Curtida removida.',
+                'message': 'Curtida removida.',
                 'likes_count': post.likes.count(),
             },
             status=status.HTTP_200_OK,

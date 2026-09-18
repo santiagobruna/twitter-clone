@@ -40,6 +40,13 @@ class SocialAPITests(APITestCase):
     def test_cannot_follow_self(self):
         response = self.client.post(f'/api/social/follow/{self.alice.id}/')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['error']['code'], 'SELF_FOLLOW')
+
+    def test_follow_twice_returns_conflict(self):
+        self.client.post(f'/api/social/follow/{self.bob.id}/')
+        response = self.client.post(f'/api/social/follow/{self.bob.id}/')
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertEqual(response.data['error']['code'], 'ALREADY_FOLLOWING')
 
     def test_unfollow(self):
         Follow.objects.create(follower=self.alice, following=self.bob)

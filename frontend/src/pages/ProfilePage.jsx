@@ -6,7 +6,7 @@ import { getMyPosts } from '../api/posts'
 import { EditProfileModal } from '../components/profile/EditProfileModal'
 import { Avatar } from '../components/ui/Avatar'
 import { useAuth } from '../contexts/AuthContext'
-import { formatApiError } from '../utils/apiErrors'
+import { formatUserError } from '../utils/apiErrors'
 import './ProfilePage.css'
 
 function formatJoined(dateJoined) {
@@ -39,7 +39,7 @@ export function ProfilePage() {
       updateUser(me)
       setPosts(myPosts.results || myPosts)
     } catch (err) {
-      setError(formatApiError(err, 'Não foi possível carregar o perfil.'))
+      setError(formatUserError(err, 'Não foi possível carregar o perfil.'))
     } finally {
       setLoading(false)
     }

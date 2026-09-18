@@ -5,7 +5,7 @@ import { registerUser, updateProfile } from '../api/auth'
 import { PasswordToggle } from '../components/auth/PasswordToggle'
 import { AuthLayout } from '../components/layout/AuthLayout'
 import { useAuth } from '../contexts/AuthContext'
-import { formatApiError } from '../utils/apiErrors'
+import { formatUserError } from '../utils/apiErrors'
 
 export function RegisterPage() {
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ export function RegisterPage() {
       setSession(data.token, user)
       navigate('/', { replace: true })
     } catch (err) {
-      setError(formatApiError(err, 'Não foi possível criar a conta.'))
+      setError(formatUserError(err, 'Não foi possível criar a conta. Verifique os dados e tente novamente.'))
     } finally {
       setLoading(false)
     }

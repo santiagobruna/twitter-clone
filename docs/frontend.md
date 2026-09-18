@@ -46,8 +46,9 @@ copy .env.example .env
 
 ## Próximas etapas
 
-1. Tela de cadastro e login (integrar com a API)
-2. Feed + criar post
-3. Perfil (nome, foto, senha)
-4. Seguir / curtidas / comentários
-5. Deploy do front (Vercel/Netlify) + CI
+1. Tela de login ✅ (UI + API)
+2. Tela de cadastro ✅ (UI + API)
+3. Feed + criar post
+4. Perfil (nome, foto, senha)
+5. Seguir / curtidas / comentários
+6. Deploy do front (Vercel/Netlify) + CI

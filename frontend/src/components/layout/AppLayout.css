@@ -2,6 +2,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .app-header {
@@ -10,14 +12,24 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .brand {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1.25rem;
   text-decoration: none;
   color: inherit;
+}
+
+.brand:hover {
+  text-decoration: none;
+  color: var(--color-primary);
 }
 
 .app-nav {
@@ -31,8 +43,21 @@
   color: inherit;
 }
 
+.app-nav a:hover {
+  color: var(--color-primary);
+}
+
 .app-nav button {
   cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.9rem;
+}
+
+.app-nav button:hover {
+  background: rgba(231, 233, 234, 0.08);
 }
 
 .nav-user {

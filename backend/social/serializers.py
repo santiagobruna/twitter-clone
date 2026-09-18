@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from accounts.serializers import UserSerializer
+from accounts.serializers import ProfileSerializer, UserSerializer
 
 from .models import Follow
 
@@ -43,6 +43,43 @@ class UserBriefSerializer(serializers.ModelSerializer):
     def get_avatar(self, obj):
         profile = _profile(obj)
         return profile.avatar if profile else None
+
+    def get_is_following(self, obj):
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            return False
+        if request.user.pk == obj.pk:
+            return False
+        return Follow.objects.filter(
+            follower=request.user,
+            following=obj,
+        ).exists()
+
+
+class PublicUserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
+    followers_count = serializers.SerializerMethodField()
+    following_count = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username',
+            'date_joined',
+            'profile',
+            'followers_count',
+            'following_count',
+            'is_following',
+        )
+        read_only_fields = fields
+
+    def get_followers_count(self, obj):
+        return Follow.objects.filter(following=obj).count()
+
+    def get_following_count(self, obj):
+        return Follow.objects.filter(follower=obj).count()
 
     def get_is_following(self, obj):
         request = self.context.get('request')

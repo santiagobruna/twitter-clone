@@ -23,6 +23,30 @@
   color: var(--color-text);
 }
 
+.post-card__avatar-link {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.post-card__author {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-card__author:hover,
+.post-card__avatar-link:hover {
+  text-decoration: none;
+}
+
+.post-card__author:hover strong {
+  text-decoration: underline;
+}
+
 .post-card__content {
   margin: 0.3rem 0 0.55rem;
   white-space: pre-wrap;

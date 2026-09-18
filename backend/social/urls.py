@@ -8,6 +8,7 @@ from .views import (
     UserFollowersListView,
     UserFollowingListView,
     UserListView,
+    UserProfileView,
 )
 
 urlpatterns = [
@@ -21,6 +22,12 @@ urlpatterns = [
     path('suggestions/', SuggestionListView.as_view(), name='suggestions-list'),
     path('users', UserListView.as_view()),
     path('users/', UserListView.as_view(), name='user-list'),
+    path('profiles/<str:username>', UserProfileView.as_view()),
+    path(
+        'profiles/<str:username>/',
+        UserProfileView.as_view(),
+        name='user-profile',
+    ),
     path('users/<int:user_id>/following', UserFollowingListView.as_view()),
     path(
         'users/<int:user_id>/following/',

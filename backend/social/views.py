@@ -9,7 +9,7 @@ from accounts.models import Profile
 from config.api_responses import bad_request, conflict, not_found
 
 from .models import Follow
-from .serializers import FollowSerializer, UserBriefSerializer
+from .serializers import FollowSerializer, PublicUserSerializer, UserBriefSerializer
 
 User = get_user_model()
 
@@ -64,6 +64,7 @@ class FollowingListView(generics.ListAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserBriefSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return User.objects.filter(
@@ -76,6 +77,7 @@ class FollowersListView(generics.ListAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserBriefSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return User.objects.filter(
@@ -83,11 +85,28 @@ class FollowersListView(generics.ListAPIView):
         ).select_related('profile').order_by('username')
 
 
+class UserProfileView(generics.RetrieveAPIView):
+    """GET /api/social/profiles/<username>/ — perfil público de qualquer usuário."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PublicUserSerializer
+    queryset = User.objects.filter(is_active=True).select_related('profile')
+    lookup_field = 'username'
+    lookup_url_kwarg = 'username'
+
+    def get_object(self):
+        return get_object_or_404(
+            self.get_queryset(),
+            username__iexact=self.kwargs['username'],
+        )
+
+
 class UserFollowingListView(generics.ListAPIView):
     """GET /api/social/users/<user_id>/following/"""
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserBriefSerializer
+    pagination_class = None
 
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.kwargs['user_id'])
@@ -154,6 +173,7 @@ class UserFollowersListView(generics.ListAPIView):
 
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserBriefSerializer
+    pagination_class = None
 
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.kwargs['user_id'])

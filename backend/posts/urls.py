@@ -7,12 +7,15 @@ from .views import (
     LikeToggleView,
     PostDetailView,
     PostListCreateView,
+    UserPostListView,
 )
 
 urlpatterns = [
     path('', PostListCreateView.as_view(), name='post-list-create'),
     path('feed', FeedView.as_view()),
     path('feed/', FeedView.as_view(), name='feed'),
+    path('user/<int:user_id>', UserPostListView.as_view()),
+    path('user/<int:user_id>/', UserPostListView.as_view(), name='user-posts'),
     path('comments/<int:pk>', CommentDestroyView.as_view()),
     path('comments/<int:pk>/', CommentDestroyView.as_view(), name='comment-destroy'),
     path('<int:pk>/like', LikeToggleView.as_view()),

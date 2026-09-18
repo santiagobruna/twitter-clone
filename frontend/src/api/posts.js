@@ -20,6 +20,10 @@ export function getMyPosts(token) {
   return apiRequest('/api/posts/', { token })
 }
 
+export function getUserPosts(token, userId) {
+  return apiRequest(`/api/posts/user/${userId}/`, { token })
+}
+
 export function createPost(token, content) {
   return apiRequest('/api/posts/', {
     method: 'POST',

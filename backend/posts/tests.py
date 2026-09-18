@@ -80,3 +80,14 @@ class PostsAPITests(APITestCase):
                 content='Legal!',
             ).exists()
         )
+
+    def test_list_another_users_posts(self):
+        bob_post = Post.objects.create(author=self.bob, content='Post do Bob')
+        Post.objects.create(author=self.alice, content='Post da Alice')
+        self._auth(self.alice_token)
+
+        response = self.client.get(f'/api/posts/user/{self.bob.id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['id'], bob_post.id)
+        self.assertEqual(response.data['results'][0]['content'], 'Post do Bob')

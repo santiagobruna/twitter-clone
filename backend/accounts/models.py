@@ -9,9 +9,9 @@ class Profile(models.Model):
         related_name='profile',
     )
     display_name = models.CharField('nome de exibição', max_length=150, blank=True)
-    avatar = models.ImageField(
+    avatar = models.URLField(
         'foto de perfil',
-        upload_to='avatars/',
+        max_length=500,
         blank=True,
         null=True,
     )

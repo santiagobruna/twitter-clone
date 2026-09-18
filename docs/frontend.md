@@ -48,7 +48,7 @@ copy .env.example .env
 
 1. Tela de login ✅ (UI + API)
 2. Tela de cadastro ✅ (UI + API)
-3. Feed + criar post
-4. Perfil (nome, foto, senha)
+3. Perfil do usuário ✅ (ver/editar + avatar no Supabase)
+4. Feed + criar post
 5. Seguir / curtidas / comentários
 6. Deploy do front (Vercel/Netlify) + CI

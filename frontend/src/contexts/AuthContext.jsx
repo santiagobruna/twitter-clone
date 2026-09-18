@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 
 const TOKEN_KEY = 'twitter_clone_token'
 const USER_KEY = 'twitter_clone_user'
@@ -18,25 +18,35 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY))
   const [user, setUser] = useState(() => readStoredUser())
 
+  const setSession = useCallback((nextToken, nextUser) => {
+    localStorage.setItem(TOKEN_KEY, nextToken)
+    localStorage.setItem(USER_KEY, JSON.stringify(nextUser))
+    setToken(nextToken)
+    setUser(nextUser)
+  }, [])
+
+  const updateUser = useCallback((nextUser) => {
+    localStorage.setItem(USER_KEY, JSON.stringify(nextUser))
+    setUser(nextUser)
+  }, [])
+
+  const clearSession = useCallback(() => {
+    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(USER_KEY)
+    setToken(null)
+    setUser(null)
+  }, [])
+
   const value = useMemo(
     () => ({
       token,
       user,
       isAuthenticated: Boolean(token),
-      setSession(nextToken, nextUser) {
-        localStorage.setItem(TOKEN_KEY, nextToken)
-        localStorage.setItem(USER_KEY, JSON.stringify(nextUser))
-        setToken(nextToken)
-        setUser(nextUser)
-      },
-      clearSession() {
-        localStorage.removeItem(TOKEN_KEY)
-        localStorage.removeItem(USER_KEY)
-        setToken(null)
-        setUser(null)
-      },
+      setSession,
+      updateUser,
+      clearSession,
     }),
-    [token, user],
+    [token, user, setSession, updateUser, clearSession],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

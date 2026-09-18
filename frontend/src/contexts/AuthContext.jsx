@@ -14,9 +14,22 @@ function readStoredUser() {
   }
 }
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY))
   const [user, setUser] = useState(() => readStoredUser())
+  const [busy, setBusy] = useState(null)
+
+  const startBusy = useCallback((kind) => {
+    setBusy(kind)
+  }, [])
+
+  const stopBusy = useCallback(() => {
+    setBusy(null)
+  }, [])
 
   const setSession = useCallback((nextToken, nextUser) => {
     localStorage.setItem(TOKEN_KEY, nextToken)
@@ -30,23 +43,29 @@ export function AuthProvider({ children }) {
     setUser(nextUser)
   }, [])
 
-  const clearSession = useCallback(() => {
+  const logout = useCallback(async () => {
+    setBusy('logout')
+    await wait(700)
     localStorage.removeItem(TOKEN_KEY)
     localStorage.removeItem(USER_KEY)
     setToken(null)
     setUser(null)
+    setBusy(null)
   }, [])
 
   const value = useMemo(
     () => ({
       token,
       user,
+      busy,
       isAuthenticated: Boolean(token),
       setSession,
       updateUser,
-      clearSession,
+      startBusy,
+      stopBusy,
+      logout,
     }),
-    [token, user, setSession, updateUser, clearSession],
+    [token, user, busy, setSession, updateUser, startBusy, stopBusy, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

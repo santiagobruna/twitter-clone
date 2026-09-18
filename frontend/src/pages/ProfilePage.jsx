@@ -7,6 +7,7 @@ import { followUser, unfollowUser } from '../api/social'
 import { PostCard } from '../components/feed/PostCard'
 import { EditProfileModal } from '../components/profile/EditProfileModal'
 import { Avatar } from '../components/ui/Avatar'
+import { FeedSkeleton } from '../components/ui/Loader'
 import { useAuth } from '../contexts/AuthContext'
 import { formatUserError } from '../utils/apiErrors'
 import { profilePath, unwrapList } from '../utils/paths'
@@ -154,7 +155,7 @@ export function ProfilePage() {
         <div>
           <h1>{displayName}</h1>
           <p className="profile-topbar__meta">
-            {posts.length} postagen{posts.length === 1 ? '' : 's'}
+            {posts.length === 1 ? '1 postagem' : `${posts.length} postagens`}
           </p>
         </div>
       </header>
@@ -218,7 +219,7 @@ export function ProfilePage() {
         </button>
       </div>
 
-      {loading ? <p className="profile-state">Carregando…</p> : null}
+      {loading && posts.length === 0 ? <FeedSkeleton /> : null}
       {error ? <p className="auth-error">{error}</p> : null}
 
       {!loading && !error && posts.length === 0 ? (

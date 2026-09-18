@@ -5,6 +5,7 @@ import { createComment, getComments, likePost, unlikePost } from '../../api/post
 import { formatRelativeTime } from '../../utils/time'
 import { formatUserError } from '../../utils/apiErrors'
 import { profilePath } from '../../utils/paths'
+import { getPostImage, getPostText } from '../../utils/postMedia'
 import { profileLinkState } from '../../utils/publicUser'
 import { Avatar } from '../ui/Avatar'
 import { CommentIcon, HeartIcon } from '../ui/Icons'
@@ -25,6 +26,8 @@ export function PostCard({ post, token, onChange }) {
 
   const authorName = post.author?.display_name || post.author?.username || 'Usuário'
   const authorHref = profilePath(post.author?.username)
+  const text = getPostText(post)
+  const image = getPostImage(post)
 
   async function toggleLike() {
     if (busy) return
@@ -114,7 +117,10 @@ export function PostCard({ post, token, onChange }) {
           </Link>
           <span>· {formatRelativeTime(post.created_at)}</span>
         </div>
-        <p className="post-card__content">{post.content}</p>
+        {text ? <p className="post-card__content">{text}</p> : null}
+        {image ? (
+          <img className="post-card__image" src={image} alt="" />
+        ) : null}
         <div className="post-card__actions">
           <button
             type="button"

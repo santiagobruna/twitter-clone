@@ -30,6 +30,10 @@ export async function uploadBanner(file, userId) {
   return uploadProfileImage(file, userId, 'banner')
 }
 
+export async function uploadPostImage(file, userId) {
+  return uploadProfileImage(file, userId, 'post')
+}
+
 async function uploadProfileImage(file, userId, kind) {
   if (!supabase) {
     throw uploadError(

@@ -8,7 +8,13 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name='posts',
     )
-    content = models.CharField(max_length=280)
+    content = models.CharField(max_length=280, blank=True)
+    image = models.URLField(
+        'foto da postagem',
+        max_length=1000,
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,7 +24,7 @@ class Post(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.author}: {self.content[:40]}'
+        return f'{self.author}: {self.content[:40] or "foto"}'
 
 
 class Like(models.Model):

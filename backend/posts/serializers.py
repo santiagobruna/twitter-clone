@@ -44,6 +44,12 @@ class PostSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True, read_only=True)
+    image = serializers.URLField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        max_length=1000,
+    )
 
     class Meta:
         model = Post
@@ -51,6 +57,7 @@ class PostSerializer(serializers.ModelSerializer):
             'id',
             'author',
             'content',
+            'image',
             'created_at',
             'updated_at',
             'likes_count',
@@ -68,6 +75,20 @@ class PostSerializer(serializers.ModelSerializer):
             'is_liked',
             'comments',
         )
+        extra_kwargs = {
+            'content': {'required': False, 'allow_blank': True},
+        }
+
+    def validate(self, attrs):
+        content = (attrs.get('content') or '').strip()
+        image = attrs.get('image') or None
+        attrs['content'] = content
+        attrs['image'] = image or None
+        if not content and not image:
+            raise serializers.ValidationError(
+                {'content': 'Escreva um texto ou adicione uma foto.'}
+            )
+        return attrs
 
     def get_likes_count(self, obj):
         return obj.likes.count()
@@ -90,6 +111,7 @@ class PostListSerializer(PostSerializer):
             'id',
             'author',
             'content',
+            'image',
             'created_at',
             'updated_at',
             'likes_count',

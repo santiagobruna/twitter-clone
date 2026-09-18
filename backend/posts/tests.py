@@ -91,3 +91,32 @@ class PostsAPITests(APITestCase):
         self.assertEqual(response.data['count'], 1)
         self.assertEqual(response.data['results'][0]['id'], bob_post.id)
         self.assertEqual(response.data['results'][0]['content'], 'Post do Bob')
+
+    def test_create_post_with_image(self):
+        self._auth(self.alice_token)
+        response = self.client.post(
+            '/api/posts/',
+            {
+                'content': 'Foto do dia',
+                'image': 'https://example.com/foto.jpg',
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['image'], 'https://example.com/foto.jpg')
+
+    def test_create_image_only_post(self):
+        self._auth(self.alice_token)
+        response = self.client.post(
+            '/api/posts/',
+            {'image': 'https://example.com/foto.jpg'},
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['content'], '')
+        self.assertEqual(response.data['image'], 'https://example.com/foto.jpg')
+
+    def test_create_post_requires_text_or_image(self):
+        self._auth(self.alice_token)
+        response = self.client.post('/api/posts/', {'content': '  '}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

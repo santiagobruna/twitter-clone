@@ -24,11 +24,12 @@ export function getUserPosts(token, userId) {
   return apiRequest(`/api/posts/user/${userId}/`, { token })
 }
 
-export function createPost(token, content) {
+export function createPost(token, payload) {
+  const body = typeof payload === 'string' ? { content: payload } : payload
   return apiRequest('/api/posts/', {
     method: 'POST',
     token,
-    body: { content },
+    body,
   })
 }
 

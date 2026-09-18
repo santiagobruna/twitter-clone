@@ -12,6 +12,7 @@ import {
   unfollowUser,
 } from '../api/social'
 import { UserListRow } from '../components/profile/UserListRow'
+import { PageLoader } from '../components/ui/Loader'
 import { useAuth } from '../contexts/AuthContext'
 import { formatUserError } from '../utils/apiErrors'
 import { profilePath, unwrapList } from '../utils/paths'
@@ -178,7 +179,7 @@ export function FollowListPage({ type }) {
         </Link>
       </nav>
 
-      {loading ? <p className="profile-state">Carregando…</p> : null}
+      {loading ? <PageLoader label="Carregando lista…" /> : null}
       {error ? <p className="auth-error follow-list-error">{error}</p> : null}
 
       {!loading && !error && people.length === 0 ? (

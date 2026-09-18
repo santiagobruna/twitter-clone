@@ -13,7 +13,7 @@ User = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('display_name', 'avatar', 'bio')
+        fields = ('display_name', 'avatar', 'banner', 'bio')
         read_only_fields = fields
 
 
@@ -130,7 +130,13 @@ class ProfileUpdateSerializer(serializers.Serializer):
         required=False,
         allow_blank=True,
         allow_null=True,
-        max_length=500,
+        max_length=1000,
+    )
+    banner = serializers.URLField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        max_length=1000,
     )
     password = serializers.CharField(
         write_only=True,
@@ -179,6 +185,10 @@ class ProfileUpdateSerializer(serializers.Serializer):
         if 'avatar' in validated_data:
             avatar = validated_data['avatar']
             profile.avatar = avatar or None
+
+        if 'banner' in validated_data:
+            banner = validated_data['banner']
+            profile.banner = banner or None
 
         profile.save()
 

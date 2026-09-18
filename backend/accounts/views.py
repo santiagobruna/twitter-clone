@@ -64,7 +64,7 @@ class LoginView(APIView):
 class ProfileView(generics.RetrieveUpdateAPIView):
     """
     GET   /api/auth/profile/  — dados do usuário autenticado
-    PATCH /api/auth/profile/  — atualiza nome, foto e/ou senha (campos opcionais)
+    PATCH /api/auth/profile/  — atualiza nome, bio, foto, capa e/ou senha (campos opcionais)
     """
 
     permission_classes = (permissions.IsAuthenticated,)

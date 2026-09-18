@@ -41,6 +41,11 @@
     #203040;
 }
 
+.profile-banner--image {
+  background-size: cover;
+  background-position: center;
+}
+
 .profile-header {
   display: flex;
   justify-content: space-between;
@@ -87,6 +92,10 @@
 
 .profile-bio {
   margin: 0.75rem 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.45;
+  color: var(--color-text);
 }
 
 .profile-stats {

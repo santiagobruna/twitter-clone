@@ -7,7 +7,7 @@ Aplicação de microblog inspirada no Twitter, com autenticação, perfis, feed 
 | Camada | Tecnologia |
 |--------|------------|
 | Back-end | Python + Django REST Framework |
-| Front-end | React (a definir na configuração) |
+| Front-end | React + Vite |
 | Banco de dados | SQLite (dev) / PostgreSQL (produção) |
 | API | Arquitetura REST |
 
@@ -23,7 +23,15 @@ projeto-final-ebac/
 │   ├── manage.py
 │   ├── requirements.txt
 │   └── .env.example
-├── frontend/                # Interface React (próximos passos)
+├── frontend/                # React + Vite
+│   ├── src/
+│   │   ├── api/             # Cliente e endpoints
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── pages/
+│   │   └── styles/
+│   ├── .env.example
+│   └── package.json
 ├── docs/
 ├── .gitignore
 └── README.md
@@ -168,13 +176,16 @@ DELETE /api/posts/comments/<id>/      # só o autor do comentário
 
 ### Front-end
 
-> Será configurado em um passo futuro.
-
 ```bash
 cd frontend
-# npm install
-# npm run dev
+copy .env.example .env
+npm install
+npm run dev
 ```
+
+App em: http://127.0.0.1:5173/
+
+Detalhes: [`docs/frontend.md`](docs/frontend.md) · [`frontend/README.md`](frontend/README.md)
 
 ## Deploy
 

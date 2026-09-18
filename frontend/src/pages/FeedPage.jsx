@@ -125,11 +125,11 @@ export function FeedPage() {
         <h1>Página Inicial</h1>
       </header>
 
-      <ComposeBox user={user} token={token} onCreated={handleCreated} />
-
-      <div className="feed-follow">
-        <WhoToFollow token={token} currentUserId={user?.id} />
+      <div className="feed-follow-mobile">
+        <WhoToFollow token={token} currentUserId={user?.id} compact />
       </div>
+
+      <ComposeBox user={user} token={token} onCreated={handleCreated} />
 
       {loading && posts.length === 0 ? (
         <p className="feed-state">Carregando o feed…</p>
@@ -138,7 +138,7 @@ export function FeedPage() {
 
       {!loading && !error && posts.length === 0 ? (
         <p className="feed-state">
-          Ainda não há postagens. Escreva a primeira ou siga alguém em Quem seguir.
+          Ainda não há postagens. Escreva a primeira no campo acima.
         </p>
       ) : null}
 
@@ -148,7 +148,6 @@ export function FeedPage() {
             key={post.id}
             post={post}
             token={token}
-            currentUserId={user?.id}
             onChange={handleChange}
           />
         ))}

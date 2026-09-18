@@ -139,3 +139,28 @@
   margin: 0;
   padding: 0;
 }
+
+@media (max-width: 720px) {
+  .profile-topbar {
+    top: 3.25rem;
+  }
+
+  .profile-banner {
+    height: 110px;
+  }
+
+  .profile-header,
+  .profile-info {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .profile-edit-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .profile-info h2 {
+    font-size: 1.2rem;
+  }
+}

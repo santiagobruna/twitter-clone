@@ -1,7 +1,7 @@
 .who-to-follow {
   background: #16181c;
   border-radius: 16px;
-  padding: 0.85rem 1rem 0.5rem;
+  padding: 1rem 1.25rem 0.65rem;
 }
 
 .who-to-follow h2 {
@@ -76,7 +76,7 @@
   font-size: 0.9rem;
 }
 
-.who-to-follow button {
+.who-to-follow li > button {
   border: 0;
   background: #eff3f4;
   color: #0f1419;
@@ -86,17 +86,17 @@
   cursor: pointer;
 }
 
-.who-to-follow button:hover {
+.who-to-follow li > button:hover {
   background: #d7dbdc;
 }
 
-.who-to-follow button.is-following {
+.who-to-follow li > button.is-following {
   background: transparent;
   color: var(--color-text);
   border: 1px solid var(--color-border-strong);
 }
 
-.who-to-follow button:disabled {
+.who-to-follow li > button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -110,4 +110,86 @@
 
 .who-to-follow__error {
   color: var(--color-danger);
+}
+
+.who-to-follow.is-compact {
+  padding: 0.4rem 0.55rem 0.3rem;
+  border-radius: 12px;
+}
+
+.who-to-follow.is-compact h2 {
+  margin-bottom: 0.3rem;
+  font-size: 0.82rem;
+}
+
+.who-to-follow.is-compact .who-to-follow__search {
+  margin-bottom: 0.3rem;
+  gap: 0.3rem;
+}
+
+.who-to-follow.is-compact .who-to-follow__search input {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.who-to-follow.is-compact .who-to-follow__search button {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.75rem;
+  width: auto;
+}
+
+.who-to-follow.is-compact ul {
+  display: flex;
+  gap: 0.45rem;
+  max-height: none;
+  overflow-x: auto;
+  padding-bottom: 0.15rem;
+}
+
+.who-to-follow.is-compact li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 4.6rem;
+  max-width: 5.4rem;
+  padding: 0.15rem 0.1rem;
+  gap: 0.15rem;
+  text-align: center;
+}
+
+.who-to-follow.is-compact li > div {
+  min-width: 0;
+  width: 100%;
+}
+
+.who-to-follow.is-compact li strong,
+.who-to-follow.is-compact li span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.who-to-follow.is-compact li span {
+  font-size: 0.62rem;
+}
+
+.who-to-follow.is-compact li > button {
+  grid-column: auto;
+  justify-self: auto;
+  width: 100%;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.68rem;
+}
+
+.who-to-follow.is-compact .who-to-follow__state {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 720px) {
+  .who-to-follow:not(.is-compact) {
+    padding: 0.9rem 1rem 0.5rem;
+  }
 }

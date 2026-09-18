@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { createComment, getComments, likePost, unlikePost } from '../../api/posts'
-import { followUser, unfollowUser } from '../../api/social'
 import { formatRelativeTime } from '../../utils/time'
 import { formatUserError } from '../../utils/apiErrors'
 import { Avatar } from '../ui/Avatar'
@@ -13,40 +12,15 @@ function unwrapList(data) {
   return data?.results || []
 }
 
-export function PostCard({ post, token, currentUserId, onChange }) {
+export function PostCard({ post, token, onChange }) {
   const [openComments, setOpenComments] = useState(false)
   const [comments, setComments] = useState([])
   const [comment, setComment] = useState('')
   const [loadingComments, setLoadingComments] = useState(false)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const [following, setFollowing] = useState(Boolean(post.author?.is_following))
 
   const authorName = post.author?.display_name || post.author?.username || 'Usuário'
-  const isOwnPost = currentUserId != null && post.author?.id === currentUserId
-
-  async function toggleFollow() {
-    if (!post.author?.id || busy) return
-    setBusy(true)
-    setError('')
-    try {
-      if (following) {
-        await unfollowUser(token, post.author.id)
-        setFollowing(false)
-      } else {
-        await followUser(token, post.author.id)
-        setFollowing(true)
-      }
-      onChange?.({
-        ...post,
-        author: { ...post.author, is_following: !following },
-      })
-    } catch (err) {
-      setError(formatUserError(err, 'Não foi possível atualizar o seguir.'))
-    } finally {
-      setBusy(false)
-    }
-  }
 
   async function toggleLike() {
     if (busy) return
@@ -122,16 +96,6 @@ export function PostCard({ post, token, currentUserId, onChange }) {
           <strong>{authorName}</strong>
           <span>@{post.author?.username}</span>
           <span>· {formatRelativeTime(post.created_at)}</span>
-          {!isOwnPost && post.author?.id ? (
-            <button
-              type="button"
-              className={`follow-chip${following ? ' is-following' : ''}`}
-              onClick={toggleFollow}
-              disabled={busy}
-            >
-              {following ? 'Seguindo' : 'Seguir'}
-            </button>
-          ) : null}
         </div>
         <p className="post-card__content">{post.content}</p>
         <div className="post-card__actions">

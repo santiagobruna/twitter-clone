@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
@@ -14,6 +15,8 @@ from .serializers import (
     PostListSerializer,
     PostSerializer,
 )
+
+User = get_user_model()
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -48,6 +51,25 @@ class PostListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class UserPostListView(generics.ListAPIView):
+    """GET /api/posts/user/<user_id>/ — postagens públicas de um usuário."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PostListSerializer
+
+    def get_queryset(self):
+        author = get_object_or_404(
+            User,
+            pk=self.kwargs['user_id'],
+            is_active=True,
+        )
+        return (
+            Post.objects.filter(author=author)
+            .select_related('author__profile')
+            .prefetch_related('likes', 'comments')
+        )
 
 
 class FeedView(generics.ListAPIView):

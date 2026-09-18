@@ -31,3 +31,15 @@ export function getUsers(token, query) {
   const search = query ? `?q=${encodeURIComponent(query)}` : ''
   return apiRequest(`/api/social/users/${search}`, { token })
 }
+
+export function getUserProfile(token, username) {
+  return apiRequest(`/api/social/profiles/${encodeURIComponent(username)}/`, { token })
+}
+
+export function getUserFollowing(token, userId) {
+  return apiRequest(`/api/social/users/${userId}/following/`, { token })
+}
+
+export function getUserFollowers(token, userId) {
+  return apiRequest(`/api/social/users/${userId}/followers/`, { token })
+}

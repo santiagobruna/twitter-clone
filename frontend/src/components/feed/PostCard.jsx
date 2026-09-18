@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
 import { createComment, getComments, likePost, unlikePost } from '../../api/posts'
 import { formatRelativeTime } from '../../utils/time'
 import { formatUserError } from '../../utils/apiErrors'
+import { profilePath } from '../../utils/paths'
+import { profileLinkState } from '../../utils/publicUser'
 import { Avatar } from '../ui/Avatar'
 import { CommentIcon, HeartIcon } from '../ui/Icons'
 import './PostCard.css'
@@ -21,6 +24,7 @@ export function PostCard({ post, token, onChange }) {
   const [busy, setBusy] = useState(false)
 
   const authorName = post.author?.display_name || post.author?.username || 'Usuário'
+  const authorHref = profilePath(post.author?.username)
 
   async function toggleLike() {
     if (busy) return
@@ -90,11 +94,24 @@ export function PostCard({ post, token, onChange }) {
 
   return (
     <article className="post-card">
-      <Avatar src={post.author?.avatar} name={authorName} size={40} />
+      <Link
+        to={authorHref}
+        state={profileLinkState(post.author, { post })}
+        className="post-card__avatar-link"
+        aria-label={authorName}
+      >
+        <Avatar src={post.author?.avatar} name={authorName} size={40} />
+      </Link>
       <div className="post-card__body">
         <div className="post-card__meta">
-          <strong>{authorName}</strong>
-          <span>@{post.author?.username}</span>
+          <Link
+            to={authorHref}
+            state={profileLinkState(post.author, { post })}
+            className="post-card__author"
+          >
+            <strong>{authorName}</strong>
+            <span>@{post.author?.username}</span>
+          </Link>
           <span>· {formatRelativeTime(post.created_at)}</span>
         </div>
         <p className="post-card__content">{post.content}</p>
@@ -130,15 +147,28 @@ export function PostCard({ post, token, onChange }) {
             <ul>
               {comments.map((item) => (
                 <li key={item.id} className="post-comment">
-                  <Avatar
-                    src={item.user?.avatar}
-                    name={item.user?.display_name || item.user?.username}
-                    size={28}
-                  />
+                  <Link
+                    to={profilePath(item.user?.username)}
+                    state={profileLinkState(item.user)}
+                    className="post-card__avatar-link"
+                    aria-label={item.user?.display_name || item.user?.username}
+                  >
+                    <Avatar
+                      src={item.user?.avatar}
+                      name={item.user?.display_name || item.user?.username}
+                      size={28}
+                    />
+                  </Link>
                   <div>
                     <div className="post-card__meta">
-                      <strong>{item.user?.display_name || item.user?.username}</strong>
-                      <span>@{item.user?.username}</span>
+                      <Link
+                        to={profilePath(item.user?.username)}
+                        state={profileLinkState(item.user)}
+                        className="post-card__author"
+                      >
+                        <strong>{item.user?.display_name || item.user?.username}</strong>
+                        <span>@{item.user?.username}</span>
+                      </Link>
                       <span>· {formatRelativeTime(item.created_at)}</span>
                     </div>
                     <p>{item.content}</p>

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { followUser, getUsers, unfollowUser } from '../../api/social'
 import { formatUserError } from '../../utils/apiErrors'
+import { profilePath } from '../../utils/paths'
+import { profileLinkState } from '../../utils/publicUser'
 import { Avatar } from '../ui/Avatar'
 import './WhoToFollow.css'
 
@@ -126,15 +129,21 @@ export function WhoToFollow({ token, currentUserId, compact = false }) {
       <ul>
         {visiblePeople.map((person) => (
           <li key={person.id}>
-            <Avatar
-              src={person.avatar}
-              name={person.display_name || person.username}
-              size={compact ? 28 : 40}
-            />
-            <div>
-              <strong>{person.display_name || person.username}</strong>
-              <span>@{person.username}</span>
-            </div>
+            <Link
+              to={profilePath(person.username)}
+              state={profileLinkState(person)}
+              className="who-to-follow__user"
+            >
+              <Avatar
+                src={person.avatar}
+                name={person.display_name || person.username}
+                size={compact ? 28 : 40}
+              />
+              <div>
+                <strong>{person.display_name || person.username}</strong>
+                <span>@{person.username}</span>
+              </div>
+            </Link>
             <button
               type="button"
               className={person.is_following ? 'is-following' : ''}

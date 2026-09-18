@@ -44,7 +44,7 @@ class SocialAPITests(APITestCase):
 
         following = self.client.get('/api/social/following/')
         self.assertEqual(following.status_code, status.HTTP_200_OK)
-        self.assertEqual(following.data['count'], 1)
+        self.assertEqual(list_usernames(following), ['bob'])
 
     def test_cannot_follow_self(self):
         response = self.client.post(f'/api/social/follow/{self.alice.id}/')
@@ -130,3 +130,40 @@ class SocialAPITests(APITestCase):
                 following=self.bob,
             ).exists()
         )
+
+    def test_public_profile_by_username(self):
+        self.bob.profile.display_name = 'Bob Silva'
+        self.bob.profile.bio = 'Olá, mundo'
+        self.bob.profile.save()
+        Follow.objects.create(follower=self.alice, following=self.bob)
+
+        response = self.client.get('/api/social/profiles/bob/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['username'], 'bob')
+        self.assertEqual(response.data['profile']['display_name'], 'Bob Silva')
+        self.assertEqual(response.data['profile']['bio'], 'Olá, mundo')
+        self.assertTrue(response.data['is_following'])
+        self.assertEqual(response.data['followers_count'], 1)
+        self.assertEqual(response.data['following_count'], 0)
+        self.assertNotIn('email', response.data)
+
+    def test_public_profile_not_found(self):
+        response = self.client.get('/api/social/profiles/naoexiste/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_other_user_followers_and_following_lists(self):
+        cara = User.objects.create_user(
+            username='cara',
+            email='cara@example.com',
+            password='SenhaForte123!',
+        )
+        Follow.objects.create(follower=self.alice, following=self.bob)
+        Follow.objects.create(follower=cara, following=self.bob)
+
+        followers = self.client.get(f'/api/social/users/{self.bob.id}/followers/')
+        self.assertEqual(followers.status_code, status.HTTP_200_OK)
+        self.assertEqual(set(list_usernames(followers)), {'alice', 'cara'})
+
+        following = self.client.get(f'/api/social/users/{self.alice.id}/following/')
+        self.assertEqual(following.status_code, status.HTTP_200_OK)
+        self.assertEqual(list_usernames(following), ['bob'])

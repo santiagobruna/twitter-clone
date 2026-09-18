@@ -191,6 +191,18 @@ Resumo (Render):
 - **URL da API:** https://twitter-clone-aqu5.onrender.com
 - **Repositório:** https://github.com/santiagobruna/twitter-clone
 
+## CI
+
+A cada push/PR que altera o `backend/`, o GitHub Actions roda:
+
+- `python manage.py check`
+- verificação de migrations pendentes
+- `python manage.py test`
+
+Workflow: [`.github/workflows/backend-ci.yml`](.github/workflows/backend-ci.yml)
+
+O deploy em produção continua automático pelo **Render** ao atualizar a branch conectada (após o CI passar no PR, o merge dispara o deploy).
+
 ## Autores
 
 Projeto Final — EBAC

@@ -39,7 +39,8 @@ class PostsAPITests(APITestCase):
         self.assertEqual(response.data['content'], 'Olá, mundo!')
         self.assertEqual(Post.objects.count(), 1)
 
-    def test_feed_only_shows_followed_users_posts(self):
+    def test_feed_shows_own_and_followed_users_posts(self):
+        own_post = Post.objects.create(author=self.alice, content='Meu post')
         bob_post = Post.objects.create(author=self.bob, content='Post do Bob')
         Post.objects.create(
             author=User.objects.create_user(
@@ -54,8 +55,9 @@ class PostsAPITests(APITestCase):
         self._auth(self.alice_token)
         response = self.client.get('/api/posts/feed/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 1)
-        self.assertEqual(response.data['results'][0]['id'], bob_post.id)
+        self.assertEqual(response.data['count'], 2)
+        ids = [item['id'] for item in response.data['results']]
+        self.assertEqual(ids, [bob_post.id, own_post.id])
 
     def test_like_and_comment(self):
         post = Post.objects.create(author=self.bob, content='Post')

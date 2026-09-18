@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from social.models import Follow
+
 from .models import Comment, Like, Post
 
 User = get_user_model()
@@ -9,10 +11,22 @@ User = get_user_model()
 class AuthorSerializer(serializers.ModelSerializer):
     display_name = serializers.CharField(source='profile.display_name', read_only=True)
     avatar = serializers.URLField(source='profile.avatar', read_only=True, allow_null=True)
+    is_following = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'display_name', 'avatar')
+        fields = ('id', 'username', 'display_name', 'avatar', 'is_following')
+
+    def get_is_following(self, obj):
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            return False
+        if request.user.pk == obj.pk:
+            return False
+        return Follow.objects.filter(
+            follower=request.user,
+            following=obj,
+        ).exists()
 
 
 class CommentSerializer(serializers.ModelSerializer):

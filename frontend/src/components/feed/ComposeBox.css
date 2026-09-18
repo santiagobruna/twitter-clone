@@ -1,0 +1,112 @@
+.compose {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.compose__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.compose__input {
+  width: 100%;
+  resize: none;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1.15rem;
+  outline: none;
+  min-height: 4.5rem;
+}
+
+.compose__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.auth-error {
+  margin: 0.35rem 0 0;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.compose__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: 0.35rem;
+}
+
+.compose__count {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.compose__count.is-warn {
+  color: #f7b928;
+}
+
+.compose__submit {
+  border: 0;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1.15rem;
+  cursor: pointer;
+}
+
+.compose__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.compose__submit:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.compose-modal {
+  width: min(100%, 560px);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 0.25rem 0.75rem;
+}
+
+.compose-modal .compose {
+  border-bottom: 0;
+}
+
+.compose-modal__close {
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0.35rem 0.65rem 0;
+  border-radius: var(--radius-pill);
+  padding: 0.1rem 0.5rem;
+}
+
+.compose-modal__close:hover {
+  background: rgba(231, 233, 234, 0.08);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4vh 1rem 1rem;
+  z-index: 50;
+}

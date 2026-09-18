@@ -1,9 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from accounts.models import Profile
 from config.api_responses import bad_request, conflict, not_found
 
 from .models import Follow
@@ -92,6 +94,59 @@ class UserFollowingListView(generics.ListAPIView):
         return User.objects.filter(
             followers_set__follower=user,
         ).select_related('profile').order_by('username')
+
+
+class SuggestionListView(generics.ListAPIView):
+    """GET /api/social/suggestions/ — pessoas para seguir."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserBriefSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        following_ids = Follow.objects.filter(
+            follower=self.request.user,
+        ).values_list('following_id', flat=True)
+        return (
+            User.objects.exclude(pk=self.request.user.pk)
+            .exclude(pk__in=following_ids)
+            .select_related('profile')
+            .order_by('username')[:5]
+        )
+
+
+class UserListView(generics.ListAPIView):
+    """
+    GET /api/social/users/
+    GET /api/social/users/?q=nome  — busca por username, nome ou e-mail
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserBriefSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = (
+            User.objects.filter(is_active=True)
+            .exclude(pk=self.request.user.pk)
+            .select_related('profile')
+            .order_by('username')
+        )
+        query = (self.request.query_params.get('q') or '').strip().lstrip('@')
+        if not query:
+            return queryset
+
+        user_ids = User.objects.filter(
+            Q(username__icontains=query)
+            | Q(email__icontains=query)
+            | Q(first_name__icontains=query)
+            | Q(last_name__icontains=query)
+        ).values_list('pk', flat=True)
+        profile_ids = Profile.objects.filter(
+            Q(display_name__icontains=query)
+            | Q(user__username__icontains=query)
+        ).values_list('user_id', flat=True)
+        return queryset.filter(Q(pk__in=user_ids) | Q(pk__in=profile_ids))
 
 
 class UserFollowersListView(generics.ListAPIView):

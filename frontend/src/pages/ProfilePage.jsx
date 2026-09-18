@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { getProfile } from '../api/auth'
 import { getMyPosts } from '../api/posts'
+import { PostCard } from '../components/feed/PostCard'
 import { EditProfileModal } from '../components/profile/EditProfileModal'
 import { Avatar } from '../components/ui/Avatar'
 import { useAuth } from '../contexts/AuthContext'
@@ -125,24 +126,17 @@ export function ProfilePage() {
 
       <ul className="profile-posts">
         {posts.map((post) => (
-          <li key={post.id} className="profile-post">
-            <Avatar
-              src={post.author?.avatar || avatar}
-              name={post.author?.display_name || displayName}
-              size={40}
+          <li key={post.id}>
+            <PostCard
+              post={post}
+              token={token}
+              currentUserId={profile?.id}
+              onChange={(updated) =>
+                setPosts((current) =>
+                  current.map((item) => (item.id === updated.id ? updated : item)),
+                )
+              }
             />
-            <div>
-              <div className="profile-post__meta">
-                <strong>{post.author?.display_name || displayName}</strong>
-                <span>@{post.author?.username || profile?.username}</span>
-                <span>· {new Date(post.created_at).toLocaleDateString('pt-BR')}</span>
-              </div>
-              <p>{post.content}</p>
-              <div className="profile-post__actions">
-                <span>💬 {post.comments_count ?? 0}</span>
-                <span>♥ {post.likes_count ?? 0}</span>
-              </div>
-            </div>
           </li>
         ))}
       </ul>

@@ -130,7 +130,6 @@ export function ProfilePage() {
             <PostCard
               post={post}
               token={token}
-              currentUserId={profile?.id}
               onChange={(updated) =>
                 setPosts((current) =>
                   current.map((item) => (item.id === updated.id ? updated : item)),

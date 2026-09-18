@@ -117,3 +117,11 @@ export function BrandMark({ size = 28 }) {
     </svg>
   )
 }
+
+export function MenuIcon({ size = 24 }) {
+  return (
+    <Icon size={size}>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </Icon>
+  )
+}

@@ -10,7 +10,7 @@ function unwrapList(data) {
   return data?.results || []
 }
 
-export function WhoToFollow({ token, currentUserId }) {
+export function WhoToFollow({ token, currentUserId, compact = false }) {
   const [query, setQuery] = useState('')
   const [people, setPeople] = useState([])
   const [loading, setLoading] = useState(true)
@@ -86,10 +86,23 @@ export function WhoToFollow({ token, currentUserId }) {
     }
   }
 
+  const visiblePeople =
+    compact && !searched ? people.filter((person) => !person.is_following) : people
+
+  if (compact && loading && !searched) {
+    return null
+  }
+
+  if (compact && !error && !searched && visiblePeople.length === 0) {
+    return null
+  }
+
   return (
-    <section className="who-to-follow">
-      <h2>Seguir pessoas</h2>
-      <p className="who-to-follow__hint">Busque pelo @ e clique em Seguir para adicionar.</p>
+    <section className={`who-to-follow${compact ? ' is-compact' : ''}`}>
+      <h2>{compact ? 'Seguir' : 'Seguir pessoas'}</h2>
+      {compact ? null : (
+        <p className="who-to-follow__hint">Busque pelo @ e clique em Seguir para adicionar.</p>
+      )}
       <form className="who-to-follow__search" onSubmit={handleSearch}>
         <input
           value={query}
@@ -102,7 +115,7 @@ export function WhoToFollow({ token, currentUserId }) {
         </button>
       </form>
       {loading ? <p className="who-to-follow__state">Buscando pessoas…</p> : null}
-      {!loading && people.length === 0 && !error ? (
+      {!loading && visiblePeople.length === 0 && !error ? (
         <p className="who-to-follow__state">
           {searched
             ? 'Nenhuma conta encontrada com esse nome.'
@@ -111,12 +124,12 @@ export function WhoToFollow({ token, currentUserId }) {
       ) : null}
       {error ? <p className="who-to-follow__error">{error}</p> : null}
       <ul>
-        {people.map((person) => (
+        {visiblePeople.map((person) => (
           <li key={person.id}>
             <Avatar
               src={person.avatar}
               name={person.display_name || person.username}
-              size={40}
+              size={compact ? 28 : 40}
             />
             <div>
               <strong>{person.display_name || person.username}</strong>

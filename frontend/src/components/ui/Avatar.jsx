@@ -1,3 +1,5 @@
+import './Avatar.css'
+
 function initials(name) {
   if (!name) return '?'
   return name

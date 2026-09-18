@@ -22,3 +22,12 @@ export function getFollowing(token) {
 export function getFollowers(token) {
   return apiRequest('/api/social/followers/', { token })
 }
+
+export function getSuggestions(token) {
+  return apiRequest('/api/social/suggestions/', { token })
+}
+
+export function getUsers(token, query) {
+  const search = query ? `?q=${encodeURIComponent(query)}` : ''
+  return apiRequest(`/api/social/users/${search}`, { token })
+}

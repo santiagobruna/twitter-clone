@@ -1,8 +1,19 @@
 /** Endpoints de posts — implementação nas próximas etapas. */
 import { apiRequest } from './client'
 
-export function getFeed(token) {
-  return apiRequest('/api/posts/feed/', { token })
+export function getFeed(token, pageUrl) {
+  const path = toApiPath(pageUrl, '/api/posts/feed/')
+  return apiRequest(path, { token })
+}
+
+function toApiPath(pageUrl, fallback) {
+  if (!pageUrl) return fallback
+  try {
+    const url = new URL(pageUrl, window.location.origin)
+    return `${url.pathname}${url.search}`
+  } catch {
+    return fallback
+  }
 }
 
 export function getMyPosts(token) {

@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -53,7 +54,7 @@ class FeedView(generics.ListAPIView):
     """
     GET /api/posts/feed/
 
-    Postagens apenas das pessoas que o usuário segue.
+    Postagens do usuário autenticado e das pessoas que ele segue.
     """
 
     permission_classes = (permissions.IsAuthenticated,)
@@ -64,7 +65,9 @@ class FeedView(generics.ListAPIView):
             follower=self.request.user,
         ).values_list('following_id', flat=True)
         return (
-            Post.objects.filter(author_id__in=following_ids)
+            Post.objects.filter(
+                Q(author=self.request.user) | Q(author_id__in=following_ids)
+            )
             .select_related('author__profile')
             .prefetch_related('likes', 'comments')
         )

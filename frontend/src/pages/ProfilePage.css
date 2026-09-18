@@ -1,5 +1,4 @@
 .profile-page {
-  margin: -1.5rem;
   padding-bottom: 2rem;
 }
 
@@ -139,51 +138,4 @@
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.profile-post {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.75rem;
-  padding: 1rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.profile-post p {
-  margin: 0.35rem 0;
-}
-
-.profile-post__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
-.profile-post__meta strong {
-  color: var(--color-text);
-}
-
-.profile-post__actions {
-  display: flex;
-  gap: 1.25rem;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
-
-.avatar {
-  border-radius: 999px;
-  object-fit: cover;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: #203040;
-}
-
-.avatar--fallback {
-  color: var(--color-text);
-  font-weight: 700;
 }

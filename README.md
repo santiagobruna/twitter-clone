@@ -32,8 +32,8 @@ projeto-final-ebac/
 ## Funcionalidades
 
 - [x] Cadastro de usuário (`POST /api/auth/register/`)
-- [ ] Login com autenticação segura
-- [ ] Edição de perfil (foto, nome e senha — campos opcionais)
+- [x] Login com autenticação segura (`POST /api/auth/login/`)
+- [x] Edição de perfil (foto, nome e senha — campos opcionais)
 - [ ] Seguir / deixar de seguir usuários
 - [ ] Lista de seguidores e seguidos
 - [ ] Feed apenas com posts de quem o usuário segue
@@ -86,6 +86,58 @@ Resposta `201`:
 }
 ```
 
+### Login
+
+```http
+POST /api/auth/login/
+Content-Type: application/json
+
+{
+  "username": "bruna",
+  "password": "suaSenhaForte123"
+}
+```
+
+Resposta `200`: mesmo formato do cadastro (`user` + `token`).
+
+Use o token nas próximas requisições:
+
+```http
+Authorization: Token seu-token-de-acesso
+```
+
+### Perfil (autenticado)
+
+```http
+GET /api/auth/profile/
+Authorization: Token seu-token-de-acesso
+```
+
+Atualização parcial — envie **apenas** o que quiser mudar (`multipart/form-data` se houver foto):
+
+```http
+PATCH /api/auth/profile/
+Authorization: Token seu-token-de-acesso
+Content-Type: multipart/form-data
+
+display_name=Bruna Santiago
+avatar=<arquivo>
+password=NovaSenhaForte123!
+password_confirm=NovaSenhaForte123!
+```
+
+Ou só JSON, sem foto:
+
+```http
+PATCH /api/auth/profile/
+Authorization: Token seu-token-de-acesso
+Content-Type: application/json
+
+{
+  "display_name": "Bruna Santiago"
+}
+```
+
 ### Front-end
 
 > Será configurado em um passo futuro.
@@ -108,8 +160,8 @@ Resumo (Render):
 4. Definir `SECRET_KEY`, `DEBUG=False`, `ALLOWED_HOSTS`, `DATABASE_URL`, etc.
 5. Testar `POST /api/auth/register/` na URL do serviço
 
-- **URL da API:** _(preencher após o deploy)_
-- **Repositório:** _(preencher após publicar no GitHub)_
+- **URL da API:** https://twitter-clone-aqu5.onrender.com
+- **Repositório:** https://github.com/santiagobruna/twitter-clone
 
 ## Autores
 

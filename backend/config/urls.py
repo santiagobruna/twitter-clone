@@ -14,5 +14,5 @@ urlpatterns = [
     path('api/posts/', include('posts.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media em dev e no Render free (sem S3). Em escala, preferir storage externo.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

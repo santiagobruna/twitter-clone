@@ -33,54 +33,6 @@ export function UserIcon() {
   )
 }
 
-export function BellIcon() {
-  return (
-    <Icon>
-      <path d="M6 9a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9" />
-      <path d="M10 21h4" />
-    </Icon>
-  )
-}
-
-export function MailIcon() {
-  return (
-    <Icon>
-      <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
-      <path d="m4 7 8 6 8-6" />
-    </Icon>
-  )
-}
-
-export function CompassIcon() {
-  return (
-    <Icon>
-      <circle cx="12" cy="12" r="9" />
-      <path d="m16 8-2.2 6.2L8 16l2.2-6.2z" />
-    </Icon>
-  )
-}
-
-export function ListIcon() {
-  return (
-    <Icon>
-      <path d="M8 7h12M8 12h12M8 17h12" />
-      <circle cx="4.5" cy="7" r="1" fill="currentColor" stroke="none" />
-      <circle cx="4.5" cy="12" r="1" fill="currentColor" stroke="none" />
-      <circle cx="4.5" cy="17" r="1" fill="currentColor" stroke="none" />
-    </Icon>
-  )
-}
-
-export function DotsIcon() {
-  return (
-    <Icon>
-      <circle cx="6" cy="12" r="1.3" fill="currentColor" stroke="none" />
-      <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" />
-      <circle cx="18" cy="12" r="1.3" fill="currentColor" stroke="none" />
-    </Icon>
-  )
-}
-
 export function CommentIcon({ size = 18 }) {
   return (
     <Icon size={size}>
@@ -122,6 +74,25 @@ export function MenuIcon({ size = 24 }) {
   return (
     <Icon size={size}>
       <path d="M4 7h16M4 12h16M4 17h16" />
+    </Icon>
+  )
+}
+
+export function LogoutIcon({ size = 22 }) {
+  return (
+    <Icon size={size}>
+      <path d="M10 7V5.8A1.8 1.8 0 0 1 11.8 4h7.4A1.8 1.8 0 0 1 21 5.8v12.4a1.8 1.8 0 0 1-1.8 1.8h-7.4A1.8 1.8 0 0 1 10 18.2V17" />
+      <path d="M3 12h11M11 8.5 14.5 12 11 15.5" />
+    </Icon>
+  )
+}
+
+export function ImageIcon({ size = 20 }) {
+  return (
+    <Icon size={size}>
+      <rect x="3.5" y="5" width="17" height="14" rx="2" />
+      <circle cx="9" cy="10" r="1.6" />
+      <path d="m7.5 16.5 3.2-3.4 2.3 2.3 3-3.4 3.5 4.5" />
     </Icon>
   )
 }

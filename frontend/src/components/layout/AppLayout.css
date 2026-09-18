@@ -67,11 +67,6 @@
   font-weight: 800;
 }
 
-.sidebar-link.is-soon {
-  opacity: 0.45;
-  cursor: default;
-}
-
 .sidebar-user {
   margin-top: auto;
   display: grid;
@@ -108,11 +103,18 @@
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  font-weight: 700;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0;
 }
 
 .sidebar-logout:hover {
   color: var(--color-danger);
+  background: rgba(244, 33, 46, 0.12);
 }
 
 .app-main {
@@ -165,8 +167,8 @@
   }
 
   .sidebar-logout {
-    font-size: 0.7rem;
-    padding: 0.2rem 0;
+    width: 36px;
+    height: 36px;
   }
 
   .right-rail {
@@ -299,8 +301,7 @@
 
   .mobile-drawer .sidebar-logout {
     margin-top: auto;
-    text-align: left;
-    padding: 0.5rem 0;
+    align-self: flex-start;
   }
 
   .mobile-nav {

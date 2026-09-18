@@ -9,7 +9,7 @@ import { formatUserError } from '../utils/apiErrors'
 
 export function LoginPage() {
   const navigate = useNavigate()
-  const { isAuthenticated, setSession } = useAuth()
+  const { isAuthenticated, setSession, startBusy, stopBusy } = useAuth()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -24,6 +24,9 @@ export function LoginPage() {
     event.preventDefault()
     setError('')
     setLoading(true)
+    startBusy('login')
+    const startedAt = Date.now()
+    let succeeded = false
 
     try {
       const data = await loginUser({
@@ -31,11 +34,19 @@ export function LoginPage() {
         password,
       })
       setSession(data.token, data.user)
+      succeeded = true
       navigate('/', { replace: true })
     } catch (err) {
       setError(formatUserError(err, 'Usuário ou senha inválidos.'))
     } finally {
+      if (succeeded) {
+        const elapsed = Date.now() - startedAt
+        if (elapsed < 500) {
+          await new Promise((resolve) => setTimeout(resolve, 500 - elapsed))
+        }
+      }
       setLoading(false)
+      stopBusy()
     }
   }
 

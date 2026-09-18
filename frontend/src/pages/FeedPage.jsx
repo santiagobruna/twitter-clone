@@ -5,6 +5,7 @@ import { getFeed, getMyPosts } from '../api/posts'
 import { ComposeBox } from '../components/feed/ComposeBox'
 import { PostCard } from '../components/feed/PostCard'
 import { WhoToFollow } from '../components/feed/WhoToFollow'
+import { FeedSkeleton } from '../components/ui/Loader'
 import { useAuth } from '../contexts/AuthContext'
 import { formatUserError } from '../utils/apiErrors'
 import './FeedPage.css'
@@ -26,7 +27,14 @@ function mergePosts(...groups) {
   for (const group of groups) {
     for (const post of group) {
       const item = normalizePost(post)
-      if (item?.id != null) map.set(item.id, item)
+      if (item?.id == null) continue
+      const current = map.get(item.id)
+      map.set(
+        item.id,
+        current
+          ? { ...current, ...item, image: item.image || current.image }
+          : item,
+      )
     }
   }
   return [...map.values()].sort(
@@ -131,9 +139,7 @@ export function FeedPage() {
 
       <ComposeBox user={user} token={token} onCreated={handleCreated} />
 
-      {loading && posts.length === 0 ? (
-        <p className="feed-state">Carregando o feed…</p>
-      ) : null}
+      {loading && posts.length === 0 ? <FeedSkeleton /> : null}
       {error ? <p className="auth-error feed-state">{error}</p> : null}
 
       {!loading && !error && posts.length === 0 ? (

@@ -9,7 +9,7 @@ import { formatUserError } from '../utils/apiErrors'
 
 export function RegisterPage() {
   const navigate = useNavigate()
-  const { isAuthenticated, setSession } = useAuth()
+  const { isAuthenticated, setSession, startBusy, stopBusy } = useAuth()
   const [displayName, setDisplayName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -33,6 +33,9 @@ export function RegisterPage() {
     }
 
     setLoading(true)
+    startBusy('register')
+    const startedAt = Date.now()
+    let succeeded = false
 
     try {
       const data = await registerUser({
@@ -57,11 +60,19 @@ export function RegisterPage() {
       }
 
       setSession(data.token, user)
+      succeeded = true
       navigate('/', { replace: true })
     } catch (err) {
       setError(formatUserError(err, 'Não foi possível criar a conta. Verifique os dados e tente novamente.'))
     } finally {
+      if (succeeded) {
+        const elapsed = Date.now() - startedAt
+        if (elapsed < 500) {
+          await new Promise((resolve) => setTimeout(resolve, 500 - elapsed))
+        }
+      }
       setLoading(false)
+      stopBusy()
     }
   }
 

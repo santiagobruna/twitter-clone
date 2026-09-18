@@ -5,10 +5,9 @@ import { useAuth } from '../../contexts/AuthContext'
 import { ComposeModal } from '../feed/ComposeBox'
 import { Avatar } from '../ui/Avatar'
 import {
-  BellIcon,
   BrandMark,
   HomeIcon,
-  MailIcon,
+  LogoutIcon,
   MenuIcon,
   UserIcon,
 } from '../ui/Icons'
@@ -20,13 +19,8 @@ const NAV_ITEMS = [
   { to: '/profile', label: 'Perfil', icon: UserIcon },
 ]
 
-const SOON_ITEMS = [
-  { label: 'Notificações', icon: BellIcon },
-  { label: 'Mensagens', icon: MailIcon },
-]
-
 export function AppLayout() {
-  const { user, token, clearSession } = useAuth()
+  const { user, token, logout } = useAuth()
   const location = useLocation()
   const [composeOpen, setComposeOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -62,28 +56,18 @@ export function AppLayout() {
   }, [menuOpen])
 
   function renderNav(onNavigate) {
-    return (
-      <>
-        {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={end}
-            className={({ isActive }) => `sidebar-link${isActive ? ' is-active' : ''}`}
-            onClick={onNavigate}
-          >
-            <Icon />
-            <span>{label}</span>
-          </NavLink>
-        ))}
-        {SOON_ITEMS.map(({ label, icon: Icon }) => (
-          <span key={label} className="sidebar-link is-soon" title="Em breve">
-            <Icon />
-            <span>{label}</span>
-          </span>
-        ))}
-      </>
-    )
+    return NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
+      <NavLink
+        key={to}
+        to={to}
+        end={end}
+        className={({ isActive }) => `sidebar-link${isActive ? ' is-active' : ''}`}
+        onClick={onNavigate}
+      >
+        <Icon />
+        <span>{label}</span>
+      </NavLink>
+    ))
   }
 
   return (
@@ -113,8 +97,14 @@ export function AppLayout() {
             <strong>{displayName}</strong>
             <span>@{user?.username}</span>
           </div>
-          <button type="button" className="sidebar-logout" onClick={clearSession}>
-            Sair
+          <button
+            type="button"
+            className="sidebar-logout"
+            onClick={logout}
+            aria-label="Sair"
+            title="Sair"
+          >
+            <LogoutIcon />
           </button>
         </div>
       </aside>
@@ -142,8 +132,14 @@ export function AppLayout() {
               <span>@{user?.username}</span>
             </div>
             <nav className="sidebar-nav">{renderNav(() => setMenuOpen(false))}</nav>
-            <button type="button" className="sidebar-logout" onClick={clearSession}>
-              Sair
+            <button
+              type="button"
+              className="sidebar-logout"
+              onClick={logout}
+              aria-label="Sair"
+              title="Sair"
+            >
+              <LogoutIcon />
             </button>
           </aside>
         </div>

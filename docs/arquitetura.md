@@ -30,10 +30,12 @@ Projeto **dividido** em front-end e back-end, com comunicação via API REST.
 4. Preparar API para produção ✅ (`feat/production-ready`)
 5. Login e edição de perfil ✅ (`feat/profile-settings`)
 6. Seguir + posts + feed + curtidas/comentários ✅ (`feat/social-feed-interactions`)
-7. Front-end React
-8. Deploy final + README
+7. Estrutura do front-end React ✅ (`feat/frontend-setup`)
+8. Telas do front (auth → feed → perfil → interações)
+9. Deploy do front + README final
 
-Guia de deploy: [`deploy.md`](deploy.md)
+Guia de deploy: [`deploy.md`](deploy.md)  
+Guia do front: [`frontend.md`](frontend.md)
 
 ## Rotas da API
 

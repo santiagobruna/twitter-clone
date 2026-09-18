@@ -29,11 +29,9 @@ Projeto **dividido** em front-end e back-end, com comunicação via API REST.
 3. Cadastro de usuários ✅ (`feat/user-registration`)
 4. Preparar API para produção ✅ (`feat/production-ready`)
 5. Login e edição de perfil ✅ (`feat/profile-settings`)
-6. Posts + feed
-7. Seguir usuários
-8. Curtidas e comentários
-9. Front-end React
-10. Deploy final + README
+6. Seguir + posts + feed + curtidas/comentários ✅ (`feat/social-feed-interactions`)
+7. Front-end React
+8. Deploy final + README
 
 Guia de deploy: [`deploy.md`](deploy.md)
 
@@ -41,9 +39,13 @@ Guia de deploy: [`deploy.md`](deploy.md)
 
 | Método | Endpoint | Descrição | Status |
 |--------|----------|-----------|--------|
-| `POST` | `/api/auth/register/` | Cadastro de usuário | ✅ |
-| `POST` | `/api/auth/login/` | Login e token | ✅ |
-| `GET` | `/api/auth/profile/` | Ver perfil autenticado | ✅ |
-| `PATCH` | `/api/auth/profile/` | Alterar nome, foto e/ou senha | ✅ |
-| — | `/api/social/` | Seguir / seguidores | Em breve |
-| — | `/api/posts/` | Posts, curtidas, comentários | Em breve |
+| `POST` | `/api/auth/register/` | Cadastro | ✅ |
+| `POST` | `/api/auth/login/` | Login | ✅ |
+| `GET`/`PATCH` | `/api/auth/profile/` | Perfil | ✅ |
+| `POST`/`DELETE` | `/api/social/follow/<id>/` | Seguir / deixar de seguir | ✅ |
+| `GET` | `/api/social/following/` | Quem eu sigo | ✅ |
+| `GET` | `/api/social/followers/` | Meus seguidores | ✅ |
+| `POST`/`GET` | `/api/posts/` | Criar / minhas posts | ✅ |
+| `GET` | `/api/posts/feed/` | Feed (só seguidos) | ✅ |
+| `POST`/`DELETE` | `/api/posts/<id>/like/` | Curtir | ✅ |
+| `GET`/`POST` | `/api/posts/<id>/comments/` | Comentários | ✅ |

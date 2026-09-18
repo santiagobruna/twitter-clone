@@ -5,7 +5,7 @@ import { loginUser } from '../api/auth'
 import { PasswordToggle } from '../components/auth/PasswordToggle'
 import { AuthLayout } from '../components/layout/AuthLayout'
 import { useAuth } from '../contexts/AuthContext'
-import { formatApiError } from '../utils/apiErrors'
+import { formatUserError } from '../utils/apiErrors'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -33,7 +33,7 @@ export function LoginPage() {
       setSession(data.token, data.user)
       navigate('/', { replace: true })
     } catch (err) {
-      setError(formatApiError(err, 'Usuário ou senha inválidos.'))
+      setError(formatUserError(err, 'Usuário ou senha inválidos.'))
     } finally {
       setLoading(false)
     }

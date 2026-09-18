@@ -15,16 +15,23 @@ export async function apiRequest(path, options = {}) {
     ...customHeaders,
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
-    method,
-    headers,
-    body:
-      body == null
-        ? undefined
-        : body instanceof FormData
-          ? body
-          : JSON.stringify(body),
-  })
+  let response
+  try {
+    response = await fetch(`${API_URL}${path}`, {
+      method,
+      headers,
+      body:
+        body == null
+          ? undefined
+          : body instanceof FormData
+            ? body
+            : JSON.stringify(body),
+    })
+  } catch {
+    const error = new Error('Failed to fetch')
+    error.status = 0
+    throw error
+  }
 
   const text = await response.text()
   let data = null
@@ -32,14 +39,18 @@ export async function apiRequest(path, options = {}) {
     try {
       data = JSON.parse(text)
     } catch {
-      data = text
+      // Evita mostrar HTML cru (ex.: Bad Request do Django) ao usuário
+      data = text.trim().startsWith('<') ? null : text
     }
   }
 
   if (!response.ok) {
-    const error = new Error('API request failed')
+    const error = new Error(
+      data?.error?.message || data?.detail || 'API request failed',
+    )
     error.status = response.status
     error.data = data
+    error.code = data?.error?.code || null
     throw error
   }
 

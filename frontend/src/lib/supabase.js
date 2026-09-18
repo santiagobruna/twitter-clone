@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 
+import { formatUserError } from '../utils/apiErrors'
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-const bucket = import.meta.env.VITE_SUPABASE_BUCKET || 'avatars'
+const bucket = import.meta.env.VITE_SUPABASE_BUCKET || 'twitter-clone'
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
 
@@ -10,24 +12,30 @@ export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null
 
+function uploadError(message) {
+  const error = new Error(message)
+  error.code = 'UPLOAD_ERROR'
+  return error
+}
+
 /**
  * Faz upload de uma imagem de perfil para o bucket público do Supabase.
  * Retorna a URL pública do arquivo.
  */
 export async function uploadAvatar(file, userId) {
   if (!supabase) {
-    throw new Error(
-      'Supabase não configurado. Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no .env',
+    throw uploadError(
+      'O envio de fotos ainda não está configurado. Peça para revisar as variáveis do Supabase.',
     )
   }
 
   if (!file?.type?.startsWith('image/')) {
-    throw new Error('Selecione um arquivo de imagem.')
+    throw uploadError('Selecione um arquivo de imagem (JPG, PNG ou WEBP).')
   }
 
   const maxBytes = 2 * 1024 * 1024
   if (file.size > maxBytes) {
-    throw new Error('A imagem deve ter no máximo 2MB.')
+    throw uploadError('A imagem deve ter no máximo 2MB.')
   }
 
   const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
@@ -40,12 +48,17 @@ export async function uploadAvatar(file, userId) {
   })
 
   if (error) {
-    throw new Error(error.message || 'Falha no upload da imagem.')
+    throw uploadError(
+      formatUserError(
+        { message: error.message },
+        'Não foi possível enviar a foto. Tente outra imagem ou tente novamente.',
+      ),
+    )
   }
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(path)
   if (!data?.publicUrl) {
-    throw new Error('Não foi possível obter a URL pública da imagem.')
+    throw uploadError('Não foi possível obter o link da imagem enviada.')
   }
 
   return data.publicUrl

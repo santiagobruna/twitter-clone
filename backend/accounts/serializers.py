@@ -96,15 +96,16 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         from django.contrib.auth import authenticate
+        from rest_framework.exceptions import AuthenticationFailed
 
         user = authenticate(
             username=attrs['username'],
             password=attrs['password'],
         )
         if user is None:
-            raise serializers.ValidationError('Usuário ou senha inválidos.')
+            raise AuthenticationFailed('Usuário ou senha inválidos.')
         if not user.is_active:
-            raise serializers.ValidationError('Esta conta está desativada.')
+            raise AuthenticationFailed('Esta conta está desativada.')
         attrs['user'] = user
         return attrs
 

@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react'
 
 import { updateProfile } from '../../api/auth'
 import { uploadAvatar, isSupabaseConfigured } from '../../lib/supabase'
-import { formatApiError } from '../../utils/apiErrors'
+import { formatUserError } from '../../utils/apiErrors'
 import { Avatar } from '../ui/Avatar'
 import { PasswordToggle } from '../auth/PasswordToggle'
 import './EditProfileModal.css'
@@ -53,9 +53,10 @@ export function EditProfileModal({ user, token, onClose, onSaved }) {
 
       if (file) {
         if (!isSupabaseConfigured) {
-          throw new Error(
-            'Configure VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no .env para enviar a foto.',
-          )
+          throw Object.assign(new Error(''), {
+            message:
+              'O envio de fotos ainda não está configurado. Verifique as variáveis do Supabase no .env.',
+          })
         }
         payload.avatar = await uploadAvatar(file, user.id)
       }
@@ -69,7 +70,7 @@ export function EditProfileModal({ user, token, onClose, onSaved }) {
       onSaved(data)
       onClose()
     } catch (err) {
-      setError(formatApiError(err, err.message || 'Não foi possível salvar o perfil.'))
+      setError(formatUserError(err, 'Não foi possível salvar o perfil. Tente novamente.'))
     } finally {
       setLoading(false)
     }
